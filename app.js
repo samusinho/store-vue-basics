@@ -4,15 +4,19 @@ Vue.createApp({
             products: [{
                 name: "Plátano verde",
                 price: 1000,
-                image: "https://organicosysaludables.com/wp-content/uploads/2021/03/Platano-verde-organico-certificado.jpg"
+                image: "https://organicosysaludables.com/wp-content/uploads/2021/03/Platano-verde-organico-certificado.jpg",
+                stock: 30,
+
             }, {
                 name: "Papa",
                 price: 3000,
-                image: "https://agro.bayer.co/-/media/bcs-inter/ws_colombia/cultivos/papa/papa.png"
+                image: "https://agro.bayer.co/-/media/bcs-inter/ws_colombia/cultivos/papa/papa.png",
+                stock: 5
             }, {
                 name: "Zanahoria",
                 price: 1800,
-                image: "https://www.cocinayvino.com/wp-content/uploads/2016/09/zanahorias2.jpg"
+                image: "https://www.cocinayvino.com/wp-content/uploads/2016/09/zanahorias2.jpg",
+                stock: 7
             }],
             itemsList: []
         }
@@ -20,6 +24,7 @@ Vue.createApp({
     methods: {
         addItemTolist(name, price, quantity) {
             const index = this.itemsList.findIndex(item => item.name == name);
+            const index_ = this.products.findIndex(item => item.name == name);
             if (index < 0) {
                 this.itemsList.push({
                     name,
@@ -35,6 +40,26 @@ Vue.createApp({
                     total: this.itemsList[index].price * newQuantity
                 };
                 this.itemsList[index] = item;
+            }
+            this.products[index_].stock = this.products[index_].stock - quantity;
+        },
+        removeItemfromList(name, price, quantity) {
+            const index = this.itemsList.findIndex(item => item.name == name);
+            if (index >= 0) {
+                const newQuantity = this.itemsList[index].quantity - quantity;
+                if (newQuantity <= 0) {
+                    this.itemsList.splice(index, 1);
+                }
+                else {
+                    const item = {
+                        ...this.itemsList[index],
+                        quantity: newQuantity,
+                        total: this.itemsList[index].price * newQuantity
+                    };
+                    this.itemsList[index] = item;
+                }
+                const index_ = this.products.findIndex(item => item.name == name);
+                this.products[index_].stock = this.products[index_].stock + quantity;
             }
         }
     }

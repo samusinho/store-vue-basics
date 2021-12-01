@@ -25,11 +25,16 @@
                         height="300">
                         <div class="card-body">
                             <h5 class="card-title">{{product.name}}</h5>
+                            <p>Disponibles: <b>{{product.stock}}</b></p>
                             <p class="card-text">
                                 Delicioso/a {{product.name.toLowerCase()}} a tan solo <b>${{product.price}}</b> pesitos el kilo
                             </p>
-                            <a class="btn btn-primary"
-                            v-on:click="addItemTolist(product.name, product.price, 1)">Añadir una unidad</a>
+                            <button class="btn btn-primary me-1"
+                            v-on:click="addItemTolist(product.name, product.price, 1)"
+                            v-bind:disabled="product.stock == 0">agregar 1</button>
+                            <button class="btn btn-danger"
+                            v-on:click="removeItemfromList(product.name, product.price, 1)"
+                            >quitar 1</button>
                         </div>
                     </div>
                 </div>
@@ -48,7 +53,7 @@
                 <tbody>
                     <tr v-for="item in itemsList">
                         <th scope="row">{{item.name}}</th>
-                        <td>{{item.price}}</td>
+                        <td>${{item.price}} COP</td>
                         <td>{{item.quantity}}</td>
                         <td>{{item.total}}</td>
                     </tr>
