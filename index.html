@@ -11,7 +11,7 @@
     <body>
         <div class="container mt-5" id="app">
             <div style="text-align: center;">
-                <h1>Bienvenidos a mi verdurería :u</h1>
+                <h1>Bienvenidos a {{name}}</h1>
             </div>
             <p>
                 Buenas, buenas... mi doña! Siga sin compromiso y mire los precios de nuestros productos.<br>
@@ -25,11 +25,16 @@
                         height="300">
                         <div class="card-body">
                             <h5 class="card-title">{{product.name}}</h5>
+                            <p>En stock: <b>{{product.stock}}</b></p>
                             <p class="card-text">
                                 Delicioso/a {{product.name.toLowerCase()}} a tan solo <b>${{product.price}}</b> pesitos el kilo
                             </p>
-                            <a class="btn btn-primary"
-                            v-on:click="addItemTolist(product.name, product.price, 1)">Añadir una unidad</a>
+                            <button class="btn btn-primary me-1"
+                            v-on:click="addItemTolist(product.name, product.price, 1)"
+                            v-bind:disabled="product.stock == 0">Añadir 1</button>
+                            <button class="btn btn-danger"
+                            v-bind:disabled="removeDisabled(product.name)"
+                            v-on:click="removeItemFromList(product.name, 1)">Quitar 1</button>
                         </div>
                     </div>
                 </div>
@@ -48,22 +53,13 @@
                 <tbody>
                     <tr v-for="item in itemsList">
                         <th scope="row">{{item.name}}</th>
-                        <td>{{item.price}}</td>
+                        <td>${{item.price}} COP</td>
                         <td>{{item.quantity}}</td>
                         <td>{{item.total}}</td>
                     </tr>
                 </tbody>
             </table>
-            <div class="alert alert-warning" role="alert" v-else>
-                <h4 class="alert-heading">Compra algo... o moriré!</h4>
-                <p>¿Por qué no me has comprado nada?  >:v</p>
-                <br>
-                
-                <p>
-                    Aprovecha nuestros descuentos <b>(guiño guiño)</b>
-                    en este día sin iva.
-                </p>
-            </div>
+            <empty-list v-else></empty-list>
         </div>
         <script src="https://unpkg.com/vue@next"></script>
         <script src="app.js"></script>
