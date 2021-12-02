@@ -19,23 +19,12 @@ Vue.createApp({
     },
     methods: {
         addItemTolist(name, price, quantity) {
-            const index = this.itemsList.findIndex(item => item.name == name);
-            if (index < 0) {
-                this.itemsList.push({
-                    name,
-                    price,
-                    quantity,
-                    total: price * quantity
-                });
-            } else {
-                const newQuantity = this.itemsList[index].quantity + quantity;
-                const item = {
-                    ...this.itemsList[index],
-                    quantity: newQuantity,
-                    total: this.itemsList[index].price * newQuantity
-                };
-                this.itemsList[index] = item;
-            }
+            this.itemsList.push({
+                name,
+                price,
+                quantity,
+                total: price * quantity
+            });
         }
     }
 }).mount('#app');
